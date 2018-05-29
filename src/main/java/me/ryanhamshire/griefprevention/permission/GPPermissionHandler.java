@@ -27,12 +27,14 @@ package me.ryanhamshire.griefprevention.permission;
 
 import me.ryanhamshire.griefprevention.GPFlags;
 import me.ryanhamshire.griefprevention.GPPlayerData;
+import me.ryanhamshire.griefprevention.GriefPrevention;
 import me.ryanhamshire.griefprevention.GriefPreventionPlugin;
 import me.ryanhamshire.griefprevention.api.claim.Claim;
 import me.ryanhamshire.griefprevention.api.claim.ClaimContexts;
 import me.ryanhamshire.griefprevention.api.claim.ClaimFlag;
 import me.ryanhamshire.griefprevention.api.claim.TrustType;
 import me.ryanhamshire.griefprevention.claim.GPClaim;
+import me.ryanhamshire.griefprevention.permission.contexts.ActiveContextsProvider;
 import me.ryanhamshire.griefprevention.util.BlockUtils;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.item.EntityItem;
@@ -196,7 +198,7 @@ public class GPPermissionHandler {
         if (playerData != null) {
             playerData.ignoreActiveContexts = true;
         }
-        final Set<Context> contexts = new HashSet<>(user.getActiveContexts());
+        final Set<Context> contexts = ActiveContextsProvider.get().getActiveContexts(user);
         if (playerData != null) {
             playerData.ignoreActiveContexts = false;
         }
@@ -242,7 +244,7 @@ public class GPPermissionHandler {
     }
 
     private static Tristate getClaimFlagPermission(GPClaim claim, String permission, String targetModPermission, String targetMetaPermission) {
-        Set<Context> contexts = new HashSet<>(GriefPreventionPlugin.GLOBAL_SUBJECT.getActiveContexts());
+        Set<Context> contexts = ActiveContextsProvider.get().getActiveContexts(GriefPreventionPlugin.GLOBAL_SUBJECT);
         contexts.add(claim.getContext());
 
         Tristate value = GriefPreventionPlugin.GLOBAL_SUBJECT.getPermissionValue(contexts, permission);
@@ -268,7 +270,7 @@ public class GPPermissionHandler {
     // Only uses world and claim type contexts
     private static Tristate getFlagDefaultPermission(GPClaim claim, String permission) {
         // Fallback to defaults
-        Set<Context> contexts = new HashSet<>(GriefPreventionPlugin.GLOBAL_SUBJECT.getActiveContexts());
+        Set<Context> contexts = ActiveContextsProvider.get().getActiveContexts(GriefPreventionPlugin.GLOBAL_SUBJECT);
         if (claim.parent != null && claim.getData().doesInheritParent()) {
             if (claim.parent.parent != null && claim.parent.getData().doesInheritParent()) {
                 claim = claim.parent.parent;
@@ -306,7 +308,7 @@ public class GPPermissionHandler {
         if (playerData != null) {
             playerData.ignoreActiveContexts = true;
         }
-        Set<Context> contexts = new LinkedHashSet<>(subject.getActiveContexts());
+        Set<Context> contexts = ActiveContextsProvider.get().getActiveContexts(subject);
         if (playerData != null) {
             playerData.ignoreActiveContexts = false;
         }
@@ -414,7 +416,7 @@ public class GPPermissionHandler {
         if (playerData != null) {
             playerData.ignoreActiveContexts = true;
         }
-        Set<Context> contexts = new LinkedHashSet<>(subject.getActiveContexts());
+        Set<Context> contexts = ActiveContextsProvider.get().getActiveContexts(subject);
         if (playerData != null) {
             playerData.ignoreActiveContexts = false;
         }

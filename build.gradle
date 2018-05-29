@@ -66,6 +66,10 @@ repositories {
         name = 'bstats'
         url = 'http://repo.bstats.org/content/repositories/releases/'
     }
+    maven {
+        name = 'luck'
+        url = 'https://repo.lucko.me/'
+    }
 }
 
 sourceSets {
@@ -86,6 +90,8 @@ dependencies {
     compile "org.bstats:bstats-sponge:1.2"
     compileOnly "io.github.nucleuspowered:nucleus-api:1.2.0-PR5-S7.0"
     compileOnly "nl.riebie:mcclans-api:1.3"
+    compileOnly "me.lucko.luckperms:luckperms-api:4.2"
+    compileOnly "me.lucko.luckperms:luckperms-sponge-service:4.2-SNAPSHOT"
 }
 
 jar {
